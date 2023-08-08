@@ -1,0 +1,22 @@
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: 'spring-boot'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: ['gateway:8000']
+  - job_name: 'user'
+    metrics_path: '/actuator/user/prometheus'
+    static_configs:
+      - targets: ['gateway:8000']
+  - job_name: 'challenge'
+    metrics_path: '/actuator/challenge/prometheus'
+    static_configs:
+      - targets: ['gateway:8000']
+  - job_name: 'event'
+    metrics_path: '/actuator/event/prometheus'
+    static_configs:
+      - targets: ['gateway:8000']

@@ -1,0 +1,41 @@
+
+version: '3.3'
+
+services:
+  prometheus:
+    image: 'prom/prometheus'
+    ports:
+      - '9090:9090'
+    command: '--config.file=/etc/prometheus/config.yml'
+    volumes:
+      - './prometheus.yml:/etc/prometheus/config.yml'
+      - 'prometheus-data:/prometheus'
+    networks:
+      - external-network
+
+  grafana:
+    image: 'grafana/grafana'
+    ports:
+      - '3000:3000'
+    volumes:
+      - './dashboard_server.json:/var/lib/grafana/dashboards/dashboard_server.json'
+      - 'grafana-data:/var/lib/grafana'
+    networks:
+      - external-network
+
+  node-exporter:
+    image: quay.io/prometheus/node-exporter
+    command:
+      - '--path.rootfs=/host'
+    volumes:
+      - '/:/host:ro,rslave'
+    networks:
+      - external-network
+
+volumes:
+  prometheus-data:
+  grafana-data:
+
+networks:
+  external-network:
+    external: true
